@@ -44,7 +44,7 @@ surface.CreateFont( "cfc_restart_warning_counter_font", {
 
 -- Internal function for formatting time into MM:SS:sss
 local function formatTime( time )
-    if time == nil then time = -1 end
+    if time == nil then time = 0 end
     local minutes = math.floor( time / 60 ) 
     local seconds = math.floor( time % 60 )
     local milliseconds = math.floor( ( time - math.floor( time ) ) * 1000 )
@@ -94,7 +94,7 @@ local function createRestartGUI( time )
     guiEaseIn()
 
     panel.Paint = function( self, w, h )
-        if CFC_RESTART_WARNING.timeLeft > 0 then
+        if CFC_RESTART_WARNING ~= nil and CFC_RESTART_WARNING.timeLeft > 0 then
             CFC_RESTART_WARNING.timeLeft = math.Clamp( CFC_RESTART_WARNING.timeFinished - CurTime(), 0, math.huge )
 
             local colourTime = CFC_RESTART_WARNING.timeLeft <= 10 and ( CFC_RESTART_WARNING.timeLeft / CFC_RESTART_WARNING.initialTime ) * 255 or 255
@@ -139,7 +139,7 @@ end
 
 -- External function for showing the vgui.
 function CFC_RESTART_WARNING.showGUI( time )
-    if time == nil or time == -1 then CFC_RESTART_WARNING.timeLeft = -1 end
+    if time == nil then time = 0 end
     CFC_RESTART_WARNING.timeLeft = time
     CFC_RESTART_WARNING.timeFinished = CurTime() + time
     CFC_RESTART_WARNING.initialTime = time
